@@ -1,0 +1,30 @@
+Based on the provided image, return an analysis of the nutrition fact data along with the list of ingredients in the json format (without markdown such as ```) that follows.
+Make sure to only include actual ingredients and not descriptor values such as "contains 2% or less of the following:"
+
+Json Format:
+{
+  "nutritionFacts": {
+    "nutrient1": {
+        "value": Number,
+        "unit": String
+    },
+    "nutrient2": {
+        "value": Number,
+        "unit": String
+    },
+  },
+  "ingredients": [
+    "ingredientName1" : {
+        "isHealthy": boolean,
+        "reason": String
+    },
+    "ingredientName2" : {
+        "isHealthy": boolean,
+        "reason": String
+    }
+  ],
+  "overallAnalysis": {
+    "isHealthy": boolean,
+    "reason": String
+  }
+}

@@ -31,3 +31,32 @@ body {
     text-wrap: balance;
   }
 }
+
+.gradient-text {
+  /* Define the gradient for the background */
+  background: linear-gradient(
+          45deg,
+          #ff0000,    /* Red */
+          #ff7300,    /* Orange */
+          #fffb00,    /* Yellow */
+          #48ff00,    /* Light Green */
+          #00ffd5,    /* Turquoise */
+          #002bff,    /* Blue */
+          #7a00ff,    /* Violet */
+          #ff00c8,    /* Pink */
+          #ff0000     /* Red */
+  );
+
+  /* Clip the background to the text */
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  /* Make the text transparent, revealing the background */
+  color: transparent;
+
+  /* Ensure the text size is large enough to display the gradient effectively */
+  font-size: 48px;
+  font-weight: bold;
+  display: inline-block;
+}
+
