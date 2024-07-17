@@ -9,7 +9,7 @@ const API_KEY= "";
 const genAI = new GoogleGenerativeAI(API_KEY);
 
 // For text-only input, use the gemini-pro model
-const model = genAI.getGenerativeModel({ model: "gemini-pro-vision"});
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash"});
 
 function bufferToGenerativePart(buffer, mimeType) {
     return {
@@ -32,7 +32,6 @@ function fileToGenerativePart(path, mimeType) {
         },
     };
 }
-
 
 export default async function handler(req, res) {
     if (req.method === 'POST') {

@@ -1,0 +1,143 @@
+{
+  "Nutrients": {
+    "Calories": {
+        "value": 50
+    },
+    "Total Fat": {
+        "value": 1,
+        "unit": "g",
+        "Saturated Fat": {
+            "value": 0,
+            "unit": "g"
+        },
+        "Trans Fat": {
+            "value": 0,
+            "unit": "g"
+        }
+    },
+    "Cholesterol": {
+        "value": 0,
+        "unit": "mg"
+    },
+    "Sodium": {
+        "value": 80,
+        "unit": "mg"
+    },
+    "Total Carbohydrate": {
+        "value": 10,
+        "unit": "g",
+        "Dietary Fiber": {
+            "value": 0,
+            "unit": "g"
+        },
+        "Total Sugars": {
+            "value": 0,
+            "unit": "g",
+            "Added Sugars": {
+                "value": 0,
+                "unit": "g"
+            }
+        }
+    },
+    "Protein": {
+        "value": 1,
+        "unit": "g"
+    },
+    "Vitamins": {
+      "Vitamin D": {
+          "value": 0,
+          "unit": "mcg"
+      },
+      "Iron": {
+          "value": 1,
+          "unit": "mg"
+      },
+      "Calcium": {
+          "value": 31,
+          "unit": "mg"
+      },
+      "Potassium": {
+          "value": 29,
+          "unit": "mg"
+      }
+    }
+  },
+  "Ingredients": {
+    "Enriched Flour": {
+        "isHealthy": false,
+        "reason": "Enriched flour is usually processed and may contain added vitamins and minerals."
+    },
+    "Wheat Flour": {
+        "isHealthy": false,
+        "reason": "Wheat flour is a refined grain and is not as nutrient-dense as whole grains."
+    },
+    "Calcium": {
+        "isHealthy": true,
+        "reason": "Calcium is an essential nutrient for bone health."
+    },
+    "Iron": {
+        "isHealthy": true,
+        "reason": "Iron is an essential nutrient for red blood cell production."
+    },
+    "Niacin": {
+        "isHealthy": true,
+        "reason": "Niacin is a B vitamin that is important for energy metabolism."
+    },
+    "Thiamin Mononitrate": {
+        "isHealthy": true,
+        "reason": "Thiamin mononitrate is a B vitamin that is important for energy metabolism."
+    },
+    "Vitamin B1": {
+        "isHealthy": true,
+        "reason": "Vitamin B1 is important for energy metabolism."
+    },
+    "Riboflavin": {
+        "isHealthy": true,
+        "reason": "Riboflavin is a B vitamin that is important for energy metabolism."
+    },
+    "Vitamin B2": {
+        "isHealthy": true,
+        "reason": "Vitamin B2 is important for energy metabolism."
+    },
+    "Foulc Acid": {
+        "isHealthy": true,
+        "reason": "Folic acid is a B vitamin that is important for cell division."
+    },
+    "Palm Oil": {
+        "isHealthy": false,
+        "reason": "Palm oil is a type of vegetable oil that is often produced in an unsustainable way."
+    },
+    "Salt": {
+        "isHealthy": false,
+        "reason": "Salt is high in sodium, which can contribute to high blood pressure."
+    },
+    "Wheat": {
+        "isHealthy": false,
+        "reason": "Wheat is a refined grain and is not as nutrient-dense as whole grains."
+    },
+    "Soy": {
+        "isHealthy": true,
+        "reason": "Soy is a good source of protein and fiber."
+    },
+    "Oats": {
+        "isHealthy": true,
+        "reason": "Oats are a good source of fiber and are low in fat."
+    },
+    "Barley": {
+        "isHealthy": true,
+        "reason": "Barley is a good source of fiber."
+    },
+    "Rye": {
+        "isHealthy": true,
+        "reason": "Rye is a good source of fiber."
+    },
+    "Sesame": {
+        "isHealthy": false,
+        "reason": "Sesame is a common allergen."
+    }
+  },
+  "overallAnalysis": {
+    "isHealthy": false,
+    "reason": "While the cracker has low calories and fat, it contains a high amount of processed ingredients. The presence of refined grains and palm oil makes it less healthy, even though some vitamins and minerals are added."
+  }
+}

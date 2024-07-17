@@ -1,19 +1,80 @@
 Based on the provided image, return an analysis of the nutrition fact data along with the list of ingredients in the json format (without markdown such as ```) that follows.
-Make sure to only include actual ingredients and not descriptor values such as "contains 2% or less of the following:"
+Make sure to only include actual ingredients and not descriptor values such as "contains 2% or less of the following:". Also make sure that each ingredient separate by a comma is a separate entry.
 
-Json Format:
+Json Format (Replace 'vitamin1' and 'ingredient2' with actual name of vitamin/ingredient):
 {
-  "nutritionFacts": {
-    "nutrient1": {
+  "Nutrients": {
+    "ServingsPerContainer": {
         "value": Number,
         "unit": String
     },
-    "nutrient2": {
+    "ServingSize": {
         "value": Number,
         "unit": String
     },
+    "Calories": {
+        "value": Number
+    },
+    "Total Fat": {
+        "value": Number,
+        "unit": String,
+        "Saturated Fat": {
+            "value": Number,
+            "unit": String
+        },
+        "Trans Fat": {
+            "value": Number,
+            "unit": String
+        },
+        "Polyunsaturated Fat": {
+            "value": Number,
+            "unit": String
+        },
+        "Monounsaturated Fat": {
+            "value": Number,
+            "unit": String
+        }
+    },
+    "Cholesterol": {
+        "value": Number,
+        "unit": String
+    },
+    "Sodium": {
+        "value": Number,
+        "unit": String
+    },
+    "Total Carbohydrate": {
+        "value": Number,
+        "unit": String,
+        "Dietary Fiber": {
+            "value": Number,
+            "unit": String
+        },
+        "Total Sugars": {
+            "value": Number,
+            "unit": String,
+            "Added Sugars": {
+                "value": Number,
+                "unit": String
+            }
+        }
+    },
+    "Protein": {
+        "value": Number,
+        "unit": String
+    },
+    "Vitamins": {
+        "vitamin1": {
+            "value": Number,
+            "unit": String
+        },
+        "vitamin2": {
+            "value": Number,
+            "unit": String
+        }
+    }
   },
-  "ingredients": [
+  "Ingredients": {
     "ingredientName1" : {
         "isHealthy": boolean,
         "reason": String
@@ -22,7 +83,7 @@ Json Format:
         "isHealthy": boolean,
         "reason": String
     }
-  ],
+  },
   "overallAnalysis": {
     "isHealthy": boolean,
     "reason": String
