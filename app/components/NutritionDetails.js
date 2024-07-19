@@ -1,8 +1,27 @@
 import NutritionRow from "./NutritionRow";
 import IngredientRow from "@/app/components/IngredientRow";
-import {Alert} from "@mui/material";
+import { Alert } from "@mui/material";
+import { useMemo } from "react";
 
-export default function NutritionDetails({ data }) {
+export default function NutritionDetails({ data, allergens }) {
+    // Memoize the modified ingredients data to avoid recalculating on every render
+    const ingredientsWithAllergens = useMemo(() => {
+        if (!data || !data.Ingredients || !Array.isArray(allergens)) {
+            return {};
+        }
+
+        console.log("Allergens: " + allergens[0]);
+
+        return Object.entries(data.Ingredients).reduce((acc, [name, details]) => {
+            const isAllergen = allergens.some(
+                allergen => typeof allergen === 'string' && name.toLowerCase().includes(allergen.toLowerCase())
+            );
+            console.log(`Ingredient: ${name}, isAllergen: ${isAllergen}`);
+            acc[name] = { ...details, isAllergen };
+            return acc;
+        }, {});
+    }, [data, allergens]);
+
     if (!data || !data.Nutrients || !data.Ingredients) {
         return <div>Loading...</div>;
     }
@@ -60,7 +79,7 @@ export default function NutritionDetails({ data }) {
 
                 {/* Vitamins */}
                 <div>
-                    {Object.entries(data.Nutrients["Vitamins"]).map(([key, {value, unit}]) => (
+                    {Object.entries(data.Nutrients["Vitamins"]).map(([key, { value, unit }]) => (
                         <p key={key}>{key} {value} {unit}</p>
                     ))}
                 </div>
@@ -68,11 +87,12 @@ export default function NutritionDetails({ data }) {
             </div>
 
             {/* Ingredients */}
+            {/*TODO: Hide this section if no ingredients are detected/exist*/}
             <div className="py-10">
                 <h2 className="font-bold text-4xl text-center pb-3">Ingredients</h2>
                 <h3 className="font-bold text-md text-center pb-3">Click an ingredient for more info</h3>
-                {Object.entries(data.Ingredients).map(([name, {isHealthy, reason}]) => (
-                    <IngredientRow key={name} ingredient={name} isHealthy={isHealthy} reason={reason}></IngredientRow>
+                {Object.entries(ingredientsWithAllergens).map(([name, { isHealthy, reason, isAllergen }]) => (
+                    <IngredientRow key={name} ingredient={name} isHealthy={isHealthy} reason={reason} isAllergen={isAllergen} />
                 ))}
             </div>
 

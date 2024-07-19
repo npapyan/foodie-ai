@@ -1,7 +1,9 @@
 import * as React from "react";
 import BasicModal from "@/app/components/Modal";
+import { Tooltip } from "@mui/material";
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
-export default function IngredientRow({ ingredient, isHealthy, reason }) {
+export default function IngredientRow({ ingredient, isHealthy, reason, isAllergen }) {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -15,17 +17,29 @@ export default function IngredientRow({ ingredient, isHealthy, reason }) {
     };
 
     // Determine background color based on isHealthy
-    const bgColorClass = isHealthy ? 'bg-green-800' : 'bg-red-800';
+    let bgColorClass = isHealthy ? 'bg-green-800' : 'bg-red-800';
+    if (isAllergen) {
+        bgColorClass = 'bg-red-800';
+    }
+
+    const modalText = (isHealthy ? 'Healthy' + (isAllergen ? ' but is an Allergen' : '') : 'Not Healthy');
 
     return (
         <div
-            className={`border border-white rounded-lg p-2 mb-2 ${bgColorClass}`}
+            className={`border border-white rounded-lg p-2 mb-2 ${bgColorClass} flex items-center`}
             onClick={openModal}
             style={{ cursor: 'pointer' }}
         >
-            <p>{ingredient}</p>
+            <p className="flex-grow">{ingredient}</p>
+            {isAllergen && (
+                <Tooltip title={`${ingredient} is an allergen`}>
+                    <div className="flex items-center ml-2">
+                        <ErrorOutlineIcon style={{ color: 'white' }} />
+                    </div>
+                </Tooltip>
+            )}
             <BasicModal
-                title={isHealthy ? 'Healthy' : 'Not Healthy'}
+                title={modalText}
                 body={reason}
                 open={open}
                 onClose={handleClose}

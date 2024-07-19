@@ -3,27 +3,21 @@ import Button from "@/app/components/Camera/Button";
 import NutritionDetails from "@/app/components/NutritionDetails";
 import { CircularProgress } from "@mui/material";
 
-export default function Camera() {
+export default function Camera({ allergens }) {
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
     const [isCameraOn, setIsCameraOn] = useState(false);
-    const [capturedImage, setCapturedImage] = useState(null); // State to hold the captured image
+    const [capturedImage, setCapturedImage] = useState(null);
     const [serverResponse, setServerResponse] = useState(null);
     const [isLoading, setLoading] = useState(false);
 
     const startCamera = async () => {
-        // Check if getUserMedia is supported
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             try {
-                // Specify the video constraints, preferring the back camera
                 const constraints = {
-                    video: { facingMode: "environment" } // This attempts to use the back camera
+                    video: { facingMode: "environment" }
                 };
-
-                // Get the video stream using the specified constraints
                 const stream = await navigator.mediaDevices.getUserMedia(constraints);
-
-                // If a video element is available, assign the stream to it
                 if (videoRef.current) {
                     videoRef.current.srcObject = stream;
                     setIsCameraOn(true);
@@ -61,21 +55,21 @@ export default function Camera() {
             const ctx = canvas.getContext('2d');
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
             const imageData = canvas.toDataURL('image/png');
-            setCapturedImage(imageData); // Save the image data in state
-            stopCamera(); // Optionally stop the camera
+            setCapturedImage(imageData);
+            stopCamera();
         }
     };
 
     const handleUsePhoto = async () => {
         setLoading(true);
         await sendImageToServer(capturedImage);
-        setCapturedImage(null); // Clear the captured image after sending
+        setCapturedImage(null);
         setLoading(false);
     };
 
     const handleRetake = () => {
-        setCapturedImage(null); // Clear the captured image
-        setIsCameraOn(true); // Restart the camera
+        setCapturedImage(null);
+        setIsCameraOn(true);
     };
 
     const sendImageToServer = async (imageData) => {
@@ -87,7 +81,7 @@ export default function Camera() {
                 },
                 body: JSON.stringify({ image: imageData }),
             });
-            const data = await response.json(); // Parse JSON response
+            const data = await response.json();
             if (!response.ok) throw new Error(data.message || 'Network response was not ok.');
             setServerResponse(JSON.parse(data.result.candidates[0].content.parts[0].text));
         } catch (error) {
@@ -105,7 +99,7 @@ export default function Camera() {
                 ) : (
                     <>
                         {serverResponse && !isCameraOn && (
-                            <NutritionDetails data={serverResponse} />
+                            <NutritionDetails data={serverResponse} allergens={allergens} />
                         )}
                         {capturedImage ? (
                             <div>

@@ -1,5 +1,5 @@
 Based on the provided image, return an analysis of the nutrition fact data along with the list of ingredients in the json format (without markdown such as ```) that follows.
-Make sure to only include actual ingredients and not descriptor values such as "contains 2% or less of the following:". Also make sure that each ingredient separate by a comma is a separate entry.
+Parse the list of ingredients by comma and exclude descriptor values such as "contains 2% or less of the following:" or "May Contain".
 
 Json Format (Replace 'vitamin1' and 'ingredient2' with actual name of vitamin/ingredient):
 {
