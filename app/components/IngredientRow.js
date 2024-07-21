@@ -22,6 +22,19 @@ export default function IngredientRow({ ingredient, isHealthy, reason, isAllerge
         bgColorClass = 'bg-red-800';
     }
 
+    const modalBody = (
+        <>
+            {reason}
+            {isAllergen && (
+                <>
+                    <br />
+                    <br />
+                    Note: This ingredient is a selected allergen
+                </>
+            )}
+        </>
+    );
+
     const modalText = (isHealthy ? 'Healthy' + (isAllergen ? ' but is an Allergen' : '') : 'Not Healthy');
 
     return (
@@ -40,7 +53,7 @@ export default function IngredientRow({ ingredient, isHealthy, reason, isAllerge
             )}
             <BasicModal
                 title={modalText}
-                body={reason}
+                body={modalBody}
                 open={open}
                 onClose={handleClose}
             />

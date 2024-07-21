@@ -3,20 +3,11 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { promises as fs } from 'fs';
 import path from 'path';
 import sharp from 'sharp';
-const API_KEY= "";
+const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
 
 // Access your API key as an environment variable (see "Set up your API key" above)
 const genAI = new GoogleGenerativeAI(API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
-function bufferToGenerativePart(buffer, mimeType) {
-    return {
-        inlineData: {
-            data: buffer,
-            mimeType: mimeType
-        },
-    };
-}
 
 async function getFileContent(filePath) {
     return await fs.readFile(filePath, 'utf8');

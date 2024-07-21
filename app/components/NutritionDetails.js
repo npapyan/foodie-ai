@@ -10,13 +10,10 @@ export default function NutritionDetails({ data, allergens }) {
             return {};
         }
 
-        console.log("Allergens: " + allergens[0]);
-
         return Object.entries(data.Ingredients).reduce((acc, [name, details]) => {
             const isAllergen = allergens.some(
                 allergen => typeof allergen === 'string' && name.toLowerCase().includes(allergen.toLowerCase())
             );
-            console.log(`Ingredient: ${name}, isAllergen: ${isAllergen}`);
             acc[name] = { ...details, isAllergen };
             return acc;
         }, {});

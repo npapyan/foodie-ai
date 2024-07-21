@@ -105,8 +105,8 @@ export default function Camera({ allergens }) {
                             <div>
                                 <img src={capturedImage} alt="Captured" style={{ maxWidth: '100%' }} />
                                 <div className="flex justify-center space-x-4 mt-4">
-                                    <Button buttonText="Use Photo" onClick={handleUsePhoto} />
                                     <Button buttonText="Retake" onClick={handleRetake} />
+                                    <Button buttonText="Analyze" onClick={handleUsePhoto} />
                                 </div>
                             </div>
                         ) : (
@@ -115,8 +115,8 @@ export default function Camera({ allergens }) {
                                     <div>
                                         <video ref={videoRef} autoPlay playsInline></video>
                                         <div className="flex justify-center space-x-4 mt-4">
-                                            <Button buttonText="Take Picture" onClick={takePicture} />
-                                            <Button buttonText="Stop Camera" onClick={stopCamera} />
+                                            <Button buttonText="Stop" onClick={stopCamera} />
+                                            <Button buttonText="Capture" onClick={takePicture} />
                                         </div>
                                     </div>
                                 ) : (
