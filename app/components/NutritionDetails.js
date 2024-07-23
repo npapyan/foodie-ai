@@ -1,9 +1,10 @@
 import NutritionRow from "./NutritionRow";
 import IngredientRow from "@/app/components/IngredientRow";
 import { Alert } from "@mui/material";
-import { useMemo } from "react";
+import {useMemo, useState} from "react";
 
 export default function NutritionDetails({ data, allergens }) {
+    const [dailyCalorieLimit, setDailyCalorieLimit] = useState(2000);
     // Memoize the modified ingredients data to avoid recalculating on every render
     const ingredientsWithAllergens = useMemo(() => {
         if (!data || !data.Ingredients || !Array.isArray(allergens)) {

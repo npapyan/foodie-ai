@@ -1,0 +1,41 @@
+// constants/nutrientDailyValues.js
+
+const nutrientDailyValues = {
+    addedSugars: { name: "Added sugars", value: 50, unit: "g" },
+    biotin: { name: "Biotin", value: 30, unit: "mcg" },
+    calcium: { name: "Calcium", value: 1300, unit: "mg" },
+    chloride: { name: "Chloride", value: 2300, unit: "mg" },
+    choline: { name: "Choline", value: 550, unit: "mg" },
+    cholesterol: { name: "Cholesterol", value: 300, unit: "mg" },
+    chromium: { name: "Chromium", value: 35, unit: "mcg" },
+    copper: { name: "Copper", value: 0.9, unit: "mg" },
+    dietaryFiber: { name: "Dietary Fiber", value: 28, unit: "g" },
+    totalFat: { name: "Fat", value: 78, unit: "g" },
+    folate: { name: "Folate/Folic Acid", value: 400, unit: "mcg DFE" },
+    iodine: { name: "Iodine", value: 150, unit: "mcg" },
+    iron: { name: "Iron", value: 18, unit: "mg" },
+    magnesium: { name: "Magnesium", value: 420, unit: "mg" },
+    manganese: { name: "Manganese", value: 2.3, unit: "mg" },
+    molybdenum: { name: "Molybdenum", value: 45, unit: "mcg" },
+    niacin: { name: "Niacin", value: 16, unit: "mg NE" },
+    pantothenicAcid: { name: "Pantothenic Acid", value: 5, unit: "mg" },
+    phosphorus: { name: "Phosphorus", value: 1250, unit: "mg" },
+    potassium: { name: "Potassium", value: 4700, unit: "mg" },
+    protein: { name: "Protein", value: 50, unit: "g" },
+    riboflavin: { name: "Riboflavin", value: 1.3, unit: "mg" },
+    saturatedFat: { name: "Saturated fat", value: 20, unit: "g" },
+    selenium: { name: "Selenium", value: 55, unit: "mcg" },
+    sodium: { name: "Sodium", value: 2300, unit: "mg" },
+    thiamin: { name: "Thiamin", value: 1.2, unit: "mg" },
+    totalCarbohydrate: { name: "Total carbohydrate", value: 275, unit: "g" },
+    vitaminA: { name: "Vitamin A", value: 900, unit: "mcg RAE" },
+    vitaminB6: { name: "Vitamin B6", value: 1.7, unit: "mg" },
+    vitaminB12: { name: "Vitamin B12", value: 2.4, unit: "mcg" },
+    vitaminC: { name: "Vitamin C", value: 90, unit: "mg" },
+    vitaminD: { name: "Vitamin D", value: 20, unit: "mcg" },
+    vitaminE: { name: "Vitamin E", value: 15, unit: "mg alpha-tocopherol" },
+    vitaminK: { name: "Vitamin K", value: 120, unit: "mcg" },
+    zinc: { name: "Zinc", value: 11, unit: "mg" }
+};
+
+export default nutrientDailyValues;
