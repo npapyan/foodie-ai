@@ -1,5 +1,6 @@
 import NutritionRow from "./NutritionRow";
 import IngredientRow from "@/app/components/IngredientRow";
+import DailyCalorie from "@/app/components/Nutrition/DailyCalorie"
 import { Alert } from "@mui/material";
 import {useMemo, useState} from "react";
 
@@ -78,10 +79,13 @@ export default function NutritionDetails({ data, allergens }) {
                 {/* Vitamins */}
                 <div>
                     {Object.entries(data.Nutrients["Vitamins"]).map(([key, { value, unit }]) => (
-                        <p key={key}>{key} {value} {unit}</p>
+                        <NutritionRow key={key} nutrient={data.Nutrients["Vitamins"][key]} nutrientName={key}></NutritionRow>
+                        // <p key={key}>{key} {value} {unit}</p>
                     ))}
                 </div>
                 <hr className="h-1 bg-white"/>
+                <br />
+                <DailyCalorie dailyCalorieLimit={dailyCalorieLimit} setDailyCalorieLimit={setDailyCalorieLimit}></DailyCalorie>
             </div>
 
             {/* Ingredients */}

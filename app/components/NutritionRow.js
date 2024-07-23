@@ -36,10 +36,11 @@ function lowercaseFirstLetter(str) {
     return str.charAt(0).toLowerCase() + str.slice(1);
 }
 
-export default function NutritionRow({ nutrient, nutrientName, isNameItalic, isNameBold }) {
+export default function NutritionRow({ nutrient, nutrientName, isNameItalic, isNameBold, dailyCalorieLimit }) {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const defaultCalorieLimit = 2000;
 
     const openModal = () => {
         handleOpen();
@@ -52,18 +53,23 @@ export default function NutritionRow({ nutrient, nutrientName, isNameItalic, isN
     const percentage = calculateDailyIntake(lowercaseFirstLetter(nutrientName).replaceAll(' ', ''), nutrient.value, nutrient.unit);
 
     return (
-        <div onClick={openModal}>
-            <p>
+        <div onClick={openModal} className="flex justify-between items-center">
+            <div>
                 <span className={`${isNameBold ? 'font-bold' : ''} ${isNameItalic ? 'italic' : ''}`}>
                     {nutrientName}
-                </span> {nutrient.value} {nutrient.unit} {percentage !== null && `(${percentage}%)`}
-                <BasicModal
-                    title={nutrientName}
-                    body={`The value of ${nutrientName} is ${nutrient.value} ${nutrient.unit}. ${percentage !== null ? `This is ${percentage}% of the daily value.` : ''}`}
-                    open={open}
-                    onClose={handleClose}
-                />
-            </p>
+                </span> {nutrient.value} {nutrient.unit}
+            </div>
+            {percentage !== null && (
+                <div className="ml-auto">
+                    {percentage}%
+                </div>
+            )}
+            <BasicModal
+                title={nutrientName}
+                body={`The value of ${nutrientName} is ${nutrient.value} ${nutrient.unit}. ${percentage !== null ? `This is ${percentage}% of the daily value.` : ''}`}
+                open={open}
+                onClose={handleClose}
+            />
         </div>
     );
 }
