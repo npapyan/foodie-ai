@@ -73,14 +73,36 @@ export default function Camera({ allergens }) {
     };
 
     const sendImageToServer = async (imageData) => {
+        // Extract base64 part from Data URL
+        const base64Image = imageData.split(',')[1];
+
+        const response = await fetch('/api/upload', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ image: base64Image }), // Send base64 data only
+        });
+
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.message || 'Network response was not ok.');
+        setServerResponse(JSON.parse(data.result.candidates[0].content.parts[0].text));
+        setLoading(false);
+    };
+
+    const sendImageToServerOld = async (imageData) => {
         try {
+            // Extract base64 part from Data URL
+            const base64Image = imageData.split(',')[1];
+
             const response = await fetch('/api/upload', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ image: imageData }),
+                body: JSON.stringify({ image: base64Image }), // Send base64 data only
             });
+
             const data = await response.json();
             if (!response.ok) throw new Error(data.message || 'Network response was not ok.');
             setServerResponse(JSON.parse(data.result.candidates[0].content.parts[0].text));
