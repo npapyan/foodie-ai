@@ -1,20 +1,22 @@
 import BasicModal from "@/app/components/Modal";
 import * as React from "react";
 import nutrientDailyValues from '../constants/nutrientDailyValues';
+import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+import { Tooltip } from '@mui/material';
 
 // Utility function to convert units if necessary
-const convertUnits = (value, fromUnit, toTo) => {
+const convertUnits = (value, fromUnit, toUnit) => {
     const conversions = {
         mcg: 0.001, // 1 mcg = 0.001 mg
         mg: 1,      // 1 mg = 1 mg
         g: 1000     // 1 g = 1000 mg
     };
 
-    if (fromUnit === toTo) {
+    if (fromUnit === toUnit) {
         return value;
     }
 
-    return value * conversions[fromUnit] / conversions[toTo];
+    return value * conversions[fromUnit] / conversions[toUnit];
 };
 
 // Calculate the percentage of daily intake for a given nutrient
@@ -60,6 +62,11 @@ export default function NutritionRow({ nutrient, nutrientName, isNameItalic, isN
         defaultCalorieLimit
     );
 
+    const highDailyValueExclusions = ["Protein"]
+    const lowDailyValueExclusions = ["Added Sugars"]
+    const isDailyValueTooHigh = percentage > 20;
+    const isDailyValueTooLow = percentage < 5;
+
     return (
         <div onClick={openModal} className="flex justify-between items-center">
             <div>
@@ -68,7 +75,17 @@ export default function NutritionRow({ nutrient, nutrientName, isNameItalic, isN
                 </span> {nutrient.value} {nutrient.unit}
             </div>
             {percentage !== null && (
-                <div className="ml-auto">
+                <div className="flex items-center ml-auto">
+                    {isDailyValueTooHigh && !highDailyValueExclusions.includes(nutrientName) && (
+                        <Tooltip title="High percentage of daily value" arrow>
+                            <PriorityHighIcon style={{ color: 'red', marginLeft: '8px', fontSize: '16px' }} />
+                        </Tooltip>
+                    )}
+                    {isDailyValueTooLow && !lowDailyValueExclusions.includes(nutrientName) && (
+                        <Tooltip title="Low percentage of daily value" arrow>
+                            <PriorityHighIcon style={{ color: 'red', marginLeft: '8px', fontSize: '16px' }} />
+                        </Tooltip>
+                    )}
                     {percentage}%
                 </div>
             )}

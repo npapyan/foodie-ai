@@ -111,7 +111,9 @@ export default function NutritionDetails({ data, allergens }) {
             </div>
 
             {/* Ingredients */}
-            {/*TODO: Hide this section if no ingredients are detected/exist*/}
+            {/*TODO: Hide this section if no ingredients are detected/exist.
+                Also offer opportunity to scan ingredients separately if none are found during initial scan.
+            */}
             <div className="py-10">
                 <h2 className="font-bold text-4xl text-center pb-3">Ingredients</h2>
                 <h3 className="font-bold text-md text-center pb-3">Click an ingredient for more info</h3>
