@@ -104,7 +104,7 @@ export default function Camera({ allergens }) {
                     <CircularProgress />
                 ) : (
                     <>
-                        {serverResponse && !isCameraOn && (
+                        {serverResponse && (!isCameraOn && !capturedImage) && (
                             <NutritionDetails data={serverResponse} allergens={allergens} />
                         )}
                         {capturedImage ? (
