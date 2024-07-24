@@ -2,7 +2,7 @@ import BasicModal from "@/app/components/Modal";
 import * as React from "react";
 import nutrientDailyValues from '../constants/nutrientDailyValues';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
-import { Tooltip } from '@mui/material';
+import { Tooltip, Alert } from '@mui/material';
 
 // Utility function to convert units if necessary
 const convertUnits = (value, fromUnit, toUnit) => {
@@ -62,10 +62,10 @@ export default function NutritionRow({ nutrient, nutrientName, isNameItalic, isN
         defaultCalorieLimit
     );
 
-    const highDailyValueExclusions = ["Protein"]
-    const lowDailyValueExclusions = ["Added Sugars"]
-    const isDailyValueTooHigh = percentage > 20;
-    const isDailyValueTooLow = percentage < 5;
+    const highDailyValueExclusions = ["Protein"];
+    const lowDailyValueExclusions = ["Added Sugars"];
+    const isDailyValueTooHigh = percentage !== null && percentage > 20 && !highDailyValueExclusions.includes(nutrientName);
+    const isDailyValueTooLow = percentage !== null && percentage < 5 && !lowDailyValueExclusions.includes(nutrientName);
 
     return (
         <div onClick={openModal} className="flex justify-between items-center">
@@ -76,14 +76,14 @@ export default function NutritionRow({ nutrient, nutrientName, isNameItalic, isN
             </div>
             {percentage !== null && (
                 <div className="flex items-center ml-auto">
-                    {isDailyValueTooHigh && !highDailyValueExclusions.includes(nutrientName) && (
+                    {isDailyValueTooHigh && (
                         <Tooltip title="High percentage of daily value" arrow>
                             <PriorityHighIcon style={{ color: 'red', marginLeft: '8px', fontSize: '16px' }} />
                         </Tooltip>
                     )}
-                    {isDailyValueTooLow && !lowDailyValueExclusions.includes(nutrientName) && (
+                    {isDailyValueTooLow && (
                         <Tooltip title="Low percentage of daily value" arrow>
-                            <PriorityHighIcon style={{ color: 'red', marginLeft: '8px', fontSize: '16px' }} />
+                            <PriorityHighIcon style={{ color: 'yellow', marginLeft: '8px', fontSize: '16px' }} />
                         </Tooltip>
                     )}
                     {percentage}%
@@ -91,7 +91,18 @@ export default function NutritionRow({ nutrient, nutrientName, isNameItalic, isN
             )}
             <BasicModal
                 title={nutrientName}
-                body={`The value of ${nutrientName} is ${nutrient.value} ${nutrient.unit}. ${percentage !== null ? `This is ${percentage}% of the daily value.` : ''}`}
+                body={
+                    <>
+                        <p>The value of {nutrientName} is {nutrient.value} {nutrient.unit}. {percentage !== null ? `This is ${percentage}% of the daily value.` : ''}</p>
+                        <br />
+                        {isDailyValueTooHigh && (
+                            <Alert severity="warning">This nutrient has a high percentage of daily value.</Alert>
+                        )}
+                        {isDailyValueTooLow && (
+                            <Alert severity="warning">This nutrient has a low percentage of daily value.</Alert>
+                        )}
+                    </>
+                }
                 open={open}
                 onClose={handleClose}
             />
