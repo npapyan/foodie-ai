@@ -63,7 +63,7 @@ export default function NutritionRow({ nutrient, nutrientName, isNameItalic, isN
     );
 
     const highDailyValueExclusions = ["Protein"];
-    const lowDailyValueExclusions = ["Added Sugars"];
+    const lowDailyValueExclusions = ["Added Sugars", "Sodium", "Cholesterol", "Total Fat", "Saturated Fat"];
     const isDailyValueTooHigh = percentage !== null && percentage > 20 && !highDailyValueExclusions.includes(nutrientName);
     const isDailyValueTooLow = percentage !== null && percentage < 5 && !lowDailyValueExclusions.includes(nutrientName);
 

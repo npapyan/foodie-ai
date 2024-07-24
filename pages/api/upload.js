@@ -26,8 +26,6 @@ export default async function handler(req, res) {
     if (req.method === 'POST') {
         try {
             let { image } = req.body;
-            console.log("Received image data");
-
             const filePath = path.join(process.cwd(), 'pages', 'api', 'nutritionPrompt.txt');
             const promptConfiguration = await getFileContent(filePath);
 
