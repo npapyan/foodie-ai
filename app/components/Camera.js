@@ -75,9 +75,8 @@ export default function Camera({ allergens }) {
     const sendImageToServer = async (imageData) => {
         try {
             // Extract base64 part from Data URL
-            console.log('Splitting image data')
             const base64Image = imageData.split(',')[1];
-            console.log('Running JSON Stringify on split image data')
+            console.log('Running JSON Stringify on image data')
             const jsonBase64Image = JSON.stringify({ image: base64Image });
             console.log('Sending to backend')
             const response = await fetch('/api/upload', {

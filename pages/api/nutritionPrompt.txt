@@ -1,8 +1,7 @@
-Based on the provided image, return an analysis of the nutrition fact data along with the list of ingredients in the json format (without markdown such as ```) that follows.
+Analyze the nutrition fact data along with the list of ingredients from the provided image into a JSON Schema provided below (without markdown such as ```)
 Parse the list of ingredients by comma and exclude descriptor values such as "contains 2% or less of the following:" or "May Contain".
-
-Ensure that the resulting JSON is VALID.
-Json Response Format (Replace 'vitamin1' and 'ingredient2' with actual name of vitamin/ingredient):
+Replace 'vitamin1' and 'ingredient2' with actual name of vitamin/ingredient.
+JSON Schema:
 {
   "Nutrients": {
     "ServingsPerContainer": {
