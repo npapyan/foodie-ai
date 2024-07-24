@@ -3,22 +3,22 @@ import * as React from "react";
 import nutrientDailyValues from '../constants/nutrientDailyValues';
 
 // Utility function to convert units if necessary
-const convertUnits = (value, fromUnit, toUnit) => {
+const convertUnits = (value, fromUnit, toTo) => {
     const conversions = {
         mcg: 0.001, // 1 mcg = 0.001 mg
         mg: 1,      // 1 mg = 1 mg
         g: 1000     // 1 g = 1000 mg
     };
 
-    if (fromUnit === toUnit) {
+    if (fromUnit === toTo) {
         return value;
     }
 
-    return value * conversions[fromUnit] / conversions[toUnit];
+    return value * conversions[fromUnit] / conversions[toTo];
 };
 
 // Calculate the percentage of daily intake for a given nutrient
-const calculateDailyIntake = (nutrient, amount, unit) => {
+const calculateDailyIntake = (nutrient, amount, unit, dailyCalorieLimit, defaultCalorieLimit) => {
     const dailyValue = nutrientDailyValues[nutrient];
     if (!dailyValue) {
         return null;
@@ -28,7 +28,9 @@ const calculateDailyIntake = (nutrient, amount, unit) => {
     const dailyValueInMg = convertUnits(dailyValue.value, dailyValue.unit, 'mg');
 
     const percentage = (amountInMg / dailyValueInMg) * 100;
-    return percentage.toFixed(2); // return percentage with 2 decimal points
+    const adjustedPercentage = (percentage * defaultCalorieLimit) / dailyCalorieLimit;
+
+    return adjustedPercentage.toFixed(2); // return adjusted percentage with 2 decimal points
 };
 
 function lowercaseFirstLetter(str) {
@@ -50,7 +52,13 @@ export default function NutritionRow({ nutrient, nutrientName, isNameItalic, isN
         return null;
     }
 
-    const percentage = calculateDailyIntake(lowercaseFirstLetter(nutrientName).replaceAll(' ', ''), nutrient.value, nutrient.unit);
+    const percentage = calculateDailyIntake(
+        lowercaseFirstLetter(nutrientName).replaceAll(' ', ''),
+        nutrient.value,
+        nutrient.unit,
+        dailyCalorieLimit,
+        defaultCalorieLimit
+    );
 
     return (
         <div onClick={openModal} className="flex justify-between items-center">

@@ -37,55 +37,77 @@ export default function NutritionDetails({ data, allergens }) {
                 <div className="text-xl">
                     {/* Servings Info */}
                     <p>{data.Nutrients["ServingsPerContainer"].value} Servings per container</p>
-                    <p className="font-bold">Serving Size: {data.Nutrients["ServingSize"].value} {data.Nutrients["ServingSize"].unit}</p>
+                    <p className="font-bold">Serving
+                        Size: {data.Nutrients["ServingSize"].value} {data.Nutrients["ServingSize"].unit}</p>
                     <hr className="h-3 bg-white"/>
                 </div>
                 <div>
                     {/* Calories Info */}
                     <p className="text-xs font-bold">Amount Per serving</p>
-                    <p className="text-3xl font-bold">Calories {data.Nutrients.Calories.value}</p>
+                    <div className="flex justify-between items-center">
+                        <div>
+                            <p className="text-3xl font-bold">Calories {data.Nutrients.Calories.value}</p>
+                        </div>
+                        <p className="font-bold">% Daily Value</p>
+                    </div>
                     <hr className="h-1 bg-white"/>
                 </div>
                 {/* Nutrients */}
                 {/* Fat */}
                 <div>
-                    <NutritionRow nutrient={data.Nutrients["Total Fat"]} nutrientName="Total Fat" isNameBold={true}></NutritionRow>
+                    <NutritionRow nutrient={data.Nutrients["Total Fat"]} nutrientName="Total Fat" isNameBold={true}
+                                  dailyCalorieLimit={dailyCalorieLimit}></NutritionRow>
                     <div className="pl-5">
-                        <NutritionRow nutrient={data.Nutrients["Total Fat"]["Saturated Fat"]} nutrientName="Saturated Fat"></NutritionRow>
-                        <NutritionRow nutrient={data.Nutrients["Total Fat"]["Trans Fat"]} nutrientName="Trans Fat" isNameItalic={true}></NutritionRow>
-                        <NutritionRow nutrient={data.Nutrients["Total Fat"]["Polyunsaturated Fat"]} nutrientName="Polyunsaturated Fat"></NutritionRow>
-                        <NutritionRow nutrient={data.Nutrients["Total Fat"]["Monounsaturated Fat"]} nutrientName="Monounsaturated Fat"></NutritionRow>
+                        <NutritionRow nutrient={data.Nutrients["Total Fat"]["Saturated Fat"]}
+                                      nutrientName="Saturated Fat" dailyCalorieLimit={dailyCalorieLimit}></NutritionRow>
+                        <NutritionRow nutrient={data.Nutrients["Total Fat"]["Trans Fat"]} nutrientName="Trans Fat"
+                                      isNameItalic={true} dailyCalorieLimit={dailyCalorieLimit}></NutritionRow>
+                        <NutritionRow nutrient={data.Nutrients["Total Fat"]["Polyunsaturated Fat"]}
+                                      nutrientName="Polyunsaturated Fat"
+                                      dailyCalorieLimit={dailyCalorieLimit}></NutritionRow>
+                        <NutritionRow nutrient={data.Nutrients["Total Fat"]["Monounsaturated Fat"]}
+                                      nutrientName="Monounsaturated Fat"
+                                      dailyCalorieLimit={dailyCalorieLimit}></NutritionRow>
                     </div>
                 </div>
                 {/* Cholesterol */}
-                <NutritionRow nutrient={data.Nutrients["Cholesterol"]} nutrientName="Cholesterol"></NutritionRow>
+                <NutritionRow nutrient={data.Nutrients["Cholesterol"]} nutrientName="Cholesterol"
+                              dailyCalorieLimit={dailyCalorieLimit}></NutritionRow>
                 {/* Sodium */}
-                <NutritionRow nutrient={data.Nutrients["Sodium"]} nutrientName="Sodium" isNameBold={true}></NutritionRow>
+                <NutritionRow nutrient={data.Nutrients["Sodium"]} nutrientName="Sodium" isNameBold={true}
+                              dailyCalorieLimit={dailyCalorieLimit}></NutritionRow>
                 {/* Carbohydrate */}
                 <div>
-                    <NutritionRow nutrient={data.Nutrients["Total Carbohydrate"]} nutrientName="Total Carbohydrate" isNameBold={true}></NutritionRow>
+                    <NutritionRow nutrient={data.Nutrients["Total Carbohydrate"]} nutrientName="Total Carbohydrate"
+                                  isNameBold={true} dailyCalorieLimit={dailyCalorieLimit}></NutritionRow>
                     <div className="pl-5">
-                        <NutritionRow nutrient={data.Nutrients["Total Carbohydrate"]["Dietary Fiber"]} nutrientName="Dietary Fiber"></NutritionRow>
-                        <NutritionRow nutrient={data.Nutrients["Total Carbohydrate"]["Total Sugars"]} nutrientName="Total Sugars"></NutritionRow>
+                        <NutritionRow nutrient={data.Nutrients["Total Carbohydrate"]["Dietary Fiber"]}
+                                      nutrientName="Dietary Fiber" dailyCalorieLimit={dailyCalorieLimit}></NutritionRow>
+                        <NutritionRow nutrient={data.Nutrients["Total Carbohydrate"]["Total Sugars"]}
+                                      nutrientName="Total Sugars" dailyCalorieLimit={dailyCalorieLimit}></NutritionRow>
                         <div className="pl-5">
-                            <NutritionRow nutrient={data.Nutrients["Total Carbohydrate"]["Total Sugars"]["Added Sugars"]} nutrientName="Added Sugars"></NutritionRow>
+                            <NutritionRow
+                                nutrient={data.Nutrients["Total Carbohydrate"]["Total Sugars"]["Added Sugars"]}
+                                nutrientName="Added Sugars" dailyCalorieLimit={dailyCalorieLimit}></NutritionRow>
                         </div>
                     </div>
                 </div>
                 {/* Protein */}
-                <NutritionRow nutrient={data.Nutrients["Protein"]} nutrientName="Protein" isNameBold={true}></NutritionRow>
+                <NutritionRow nutrient={data.Nutrients["Protein"]} nutrientName="Protein" isNameBold={true}
+                              dailyCalorieLimit={dailyCalorieLimit}></NutritionRow>
                 <hr className="h-3 bg-white"/>
 
                 {/* Vitamins */}
                 <div>
-                    {Object.entries(data.Nutrients["Vitamins"]).map(([key, { value, unit }]) => (
-                        <NutritionRow key={key} nutrient={data.Nutrients["Vitamins"][key]} nutrientName={key}></NutritionRow>
-                        // <p key={key}>{key} {value} {unit}</p>
+                    {Object.entries(data.Nutrients["Vitamins"]).map(([key, {value, unit}]) => (
+                        <NutritionRow key={key} nutrient={data.Nutrients["Vitamins"][key]} nutrientName={key}
+                                      dailyCalorieLimit={dailyCalorieLimit}></NutritionRow>
                     ))}
                 </div>
                 <hr className="h-1 bg-white"/>
-                <br />
-                <DailyCalorie dailyCalorieLimit={dailyCalorieLimit} setDailyCalorieLimit={setDailyCalorieLimit}></DailyCalorie>
+                <br/>
+                <DailyCalorie dailyCalorieLimit={dailyCalorieLimit}
+                              setDailyCalorieLimit={setDailyCalorieLimit}></DailyCalorie>
             </div>
 
             {/* Ingredients */}

@@ -52,12 +52,11 @@ export default function NutritionDetails({ dailyCalorieLimit, setDailyCalorieLim
         <ThemeProvider theme={darkTheme}>
             <CssBaseline />
             <Box p={2} bgcolor="background.default" color="text.primary">
-                <Typography variant="body1" gutterBottom>
+                <Typography variant="body2" gutterBottom>
                     The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet.
                 </Typography>
-                <Typography variant="body1" gutterBottom>
+                <Typography variant="body2" gutterBottom>
                     <span>{dailyCalorieLimit} calories a day is used for general nutritional advice. </span>
-                    <span>Enter a different value if you have a different daily calorie limit:</span>
                 </Typography>
                 <TextField
                     label="Daily Calorie Limit"
