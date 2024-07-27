@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import {Fab, Modal, Box, Typography, Checkbox, FormControlLabel, TextField,
     Button, List, ListItem, IconButton, Tooltip} from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
+import HealthAndSafetyIcon from '@mui/icons-material/HealthAndSafety';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 const style = {
@@ -70,8 +70,7 @@ function AllergenSelector({ allergens, setAllergens }) {
         <div>
             <Tooltip title="Add allergens">
                 <Fab variant="extended" color="primary" aria-label="add" onClick={handleOpen} style={{ position: 'fixed', bottom: 16, right: 16 }}>
-                    <AddIcon fontSize="large" sx={{ mr: 1 }} />
-                    Allergens
+                    <HealthAndSafetyIcon fontSize="large" />
                 </Fab>
             </Tooltip>
             <Modal
