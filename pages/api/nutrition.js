@@ -1,4 +1,4 @@
-// pages/api/upload.js
+// pages/api/nutrition.js
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { promises as fs } from 'fs';
 import path from 'path';

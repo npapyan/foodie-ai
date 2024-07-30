@@ -40,7 +40,7 @@ const darkTheme = createTheme({
     },
 });
 
-export default function NutritionDetails({ dailyCalorieLimit, setDailyCalorieLimit }) {
+export default function DailyCalorie({ dailyCalorieLimit, setDailyCalorieLimit }) {
     const handleCalorieChange = (event) => {
         const value = parseInt(event.target.value, 10);
         if (!isNaN(value)) {

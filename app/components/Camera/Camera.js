@@ -1,22 +1,18 @@
 import { useRef, useState, useEffect } from 'react';
 import Button from "@/app/components/Common/Button";
-import NutritionDetails from "@/app/components/Nutrition/NutritionDetails";
 import { CircularProgress } from "@mui/material";
 
-export default function Camera({ allergens }) {
+export default function Camera({ apiPath, onData, scanText }) {
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
     const [isCameraOn, setIsCameraOn] = useState(false);
     const [capturedImage, setCapturedImage] = useState(null);
-    const [serverResponse, setServerResponse] = useState(null);
     const [isLoading, setLoading] = useState(false);
 
     const startCamera = async () => {
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             try {
-                const constraints = {
-                    video: { facingMode: "environment" }
-                };
+                const constraints = { video: { facingMode: "environment" } };
                 const stream = await navigator.mediaDevices.getUserMedia(constraints);
                 if (videoRef.current) {
                     videoRef.current.srcObject = stream;
@@ -62,37 +58,29 @@ export default function Camera({ allergens }) {
 
     const handleUsePhoto = async () => {
         setLoading(true);
-        await sendImageToServer(capturedImage);
-        setCapturedImage(null);
-        setLoading(false);
+        try {
+            const base64Image = capturedImage.split(',')[1];
+            const jsonBase64Image = JSON.stringify({ image: base64Image });
+            const response = await fetch(apiPath, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: jsonBase64Image,
+            });
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.message || 'Network response was not ok.');
+            const parsedData = JSON.parse(data.result.candidates[0].content.parts[0].text)
+            onData(parsedData);
+        } catch (error) {
+            console.error("Error sending image:", error);
+        } finally {
+            setLoading(false);
+            setCapturedImage(null);
+        }
     };
 
     const handleRetake = () => {
         setCapturedImage(null);
         setIsCameraOn(true);
-    };
-
-    const sendImageToServer = async (imageData) => {
-        try {
-            // Extract base64 part from Data URL
-            const base64Image = imageData.split(',')[1];
-            const jsonBase64Image = JSON.stringify({ image: base64Image });
-            const response = await fetch('/api/upload', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: jsonBase64Image, // Send base64 data only
-            });
-
-            const data = await response.json();
-            if (!response.ok) throw new Error(data.message || 'Network response was not ok.');
-            setServerResponse(JSON.parse(data.result.candidates[0].content.parts[0].text));
-        } catch (error) {
-            console.error("Error sending image:", error);
-        } finally {
-            setLoading(false);
-        }
     };
 
     return (
@@ -102,9 +90,6 @@ export default function Camera({ allergens }) {
                     <CircularProgress />
                 ) : (
                     <>
-                        {serverResponse && (!isCameraOn && !capturedImage) && (
-                            <NutritionDetails data={serverResponse} allergens={allergens} />
-                        )}
                         {capturedImage ? (
                             <div>
                                 <img src={capturedImage} alt="Captured" style={{ maxWidth: '100%' }} />
@@ -124,7 +109,7 @@ export default function Camera({ allergens }) {
                                         </div>
                                     </div>
                                 ) : (
-                                    <Button buttonText="Scan Nutrition Facts" onClick={() => setIsCameraOn(true)} />
+                                    <Button buttonText={scanText} onClick={() => setIsCameraOn(true)} />
                                 )}
                             </div>
                         )}
