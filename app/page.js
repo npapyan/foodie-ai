@@ -1,8 +1,8 @@
 "use client";
 import { useState } from 'react';
-import Camera from "@/app/components/Camera";
-import Title from "@/app/components/Title";
-import AllergenSelector from "@/app/components/AllergenSelector";
+import Camera from "@/app/components/Camera/Camera";
+import Title from "@/app/components/Common/Title";
+import AllergenSelector from "@/app/components/Nutrition/AllergenSelector";
 
 export default function Home() {
     const [allergens, setAllergens] = useState([

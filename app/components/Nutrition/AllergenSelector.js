@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
-import {Fab, Modal, Box, Typography, Checkbox, FormControlLabel, TextField,
-    Button, List, ListItem, IconButton, Tooltip} from '@mui/material';
+import { Modal, Box, Typography, Checkbox, FormControlLabel, TextField,
+    Button, List, ListItem, IconButton, Tooltip, SpeedDial, SpeedDialIcon, SpeedDialAction } from '@mui/material';
 import HealthAndSafetyIcon from '@mui/icons-material/HealthAndSafety';
 import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -34,6 +34,7 @@ function AllergenSelector({ allergens, setAllergens }) {
     const [newAllergen, setNewAllergen] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
+    const [speedDialOpen, setSpeedDialOpen] = useState(false);
 
     const handleOpen = () => {
         setOpen(true);
@@ -68,11 +69,22 @@ function AllergenSelector({ allergens, setAllergens }) {
 
     return (
         <div>
-            <Tooltip title="Add allergens">
-                <Fab variant="extended" color="primary" aria-label="add" onClick={handleOpen} style={{ position: 'fixed', bottom: 16, right: 16 }}>
-                    <HealthAndSafetyIcon fontSize="large" />
-                </Fab>
-            </Tooltip>
+            <SpeedDial
+                ariaLabel="Allergen actions"
+                sx={{ position: 'fixed', bottom: 16, right: 16 }}
+                icon={<SpeedDialIcon />}
+                onClick={() => setSpeedDialOpen(!speedDialOpen)}
+                open={speedDialOpen}
+                onOpen={() => setSpeedDialOpen(true)}
+                onClose={() => setSpeedDialOpen(false)}
+            >
+                <SpeedDialAction
+                    icon={<HealthAndSafetyIcon />}
+                    tooltipTitle="Add allergens"
+                    tooltipOpen
+                    onClick={handleOpen}
+                />
+            </SpeedDial>
             <Modal
                 open={open}
                 onClose={handleClose}

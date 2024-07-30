@@ -1,6 +1,6 @@
-import BasicModal from "@/app/components/Modal";
+import BasicModal from "@/app/components/Common/Modal";
 import * as React from "react";
-import nutrientDailyValues from '../constants/nutrientDailyValues';
+import nutrientDailyValues from '../../constants/nutrientDailyValues';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 import { Tooltip, Alert } from '@mui/material';
 

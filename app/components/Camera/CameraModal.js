@@ -1,15 +1,19 @@
+// components/CameraModal.js
 import { useRef, useState, useEffect } from 'react';
-import Button from "@/app/components/Camera/Button";
-import NutritionDetails from "@/app/components/NutritionDetails";
+import Button from "@/app/components/Common/Button";
 import { CircularProgress } from "@mui/material";
 
-export default function Camera({ allergens }) {
+export default function CameraModal({ onCapture, onClose }) {
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
     const [isCameraOn, setIsCameraOn] = useState(false);
     const [capturedImage, setCapturedImage] = useState(null);
-    const [serverResponse, setServerResponse] = useState(null);
     const [isLoading, setLoading] = useState(false);
+
+    useEffect(() => {
+        startCamera();
+        return () => stopCamera();
+    }, []);
 
     const startCamera = async () => {
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -39,13 +43,6 @@ export default function Camera({ allergens }) {
         }
     };
 
-    useEffect(() => {
-        if (isCameraOn && videoRef.current) {
-            startCamera();
-        }
-        return () => stopCamera();
-    }, [isCameraOn]);
-
     const takePicture = () => {
         if (videoRef.current && canvasRef.current) {
             const video = videoRef.current;
@@ -60,59 +57,32 @@ export default function Camera({ allergens }) {
         }
     };
 
-    const handleUsePhoto = async () => {
-        setLoading(true);
-        await sendImageToServer(capturedImage);
+    const handleUsePhoto = () => {
+        onCapture(capturedImage);
         setCapturedImage(null);
         setLoading(false);
+        onClose();
     };
 
     const handleRetake = () => {
         setCapturedImage(null);
         setIsCameraOn(true);
-    };
-
-    const sendImageToServer = async (imageData) => {
-        try {
-            // Extract base64 part from Data URL
-            const base64Image = imageData.split(',')[1];
-            console.log('Running JSON Stringify on image data')
-            const jsonBase64Image = JSON.stringify({ image: base64Image });
-            console.log('Sending to backend')
-            const response = await fetch('/api/upload', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: jsonBase64Image, // Send base64 data only
-            });
-
-            const data = await response.json();
-            if (!response.ok) throw new Error(data.message || 'Network response was not ok.');
-            setServerResponse(JSON.parse(data.result.candidates[0].content.parts[0].text));
-        } catch (error) {
-            console.error("Error sending image:", error);
-        } finally {
-            setLoading(false);
-        }
+        startCamera();
     };
 
     return (
-        <div>
+        <div className="camera-modal">
             <div className="flex flex-col items-center justify-center">
                 {isLoading ? (
                     <CircularProgress />
                 ) : (
                     <>
-                        {serverResponse && (!isCameraOn && !capturedImage) && (
-                            <NutritionDetails data={serverResponse} allergens={allergens} />
-                        )}
                         {capturedImage ? (
                             <div>
                                 <img src={capturedImage} alt="Captured" style={{ maxWidth: '100%' }} />
-                                <div className="flex justify-center space-x-4 mt-4">
+                                <div className="flex justify-center space-x-4 mt-4 pb-4">
                                     <Button buttonText="Retake" onClick={handleRetake} />
-                                    <Button buttonText="Analyze" onClick={handleUsePhoto} />
+                                    <Button buttonText="Use Photo" onClick={handleUsePhoto} />
                                 </div>
                             </div>
                         ) : (
@@ -120,13 +90,13 @@ export default function Camera({ allergens }) {
                                 {isCameraOn ? (
                                     <div>
                                         <video ref={videoRef} autoPlay playsInline></video>
-                                        <div className="flex justify-center space-x-4 mt-4">
+                                        <div className="flex justify-center space-x-4 mt-4 pb-4">
                                             <Button buttonText="Stop" onClick={stopCamera} />
                                             <Button buttonText="Capture" onClick={takePicture} />
                                         </div>
                                     </div>
                                 ) : (
-                                    <Button buttonText="Start Camera" onClick={() => setIsCameraOn(true)} />
+                                    <Button buttonText="Start Camera" onClick={startCamera} />
                                 )}
                             </div>
                         )}

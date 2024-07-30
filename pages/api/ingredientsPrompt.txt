@@ -1,0 +1,15 @@
+Analyze the provided image and return only the parsed list of Ingredients that are visible. Use the following JSON format:
+Replace 'vitamin1' and 'ingredient2' with actual name of vitamin/ingredient.
+If no ingredients are in the photo, DO NOT MAKE UP INGREDIENTS.
+{
+  "Ingredients": {
+    "ingredientName1" : {
+        "isHealthy": boolean,
+        "reason": String
+    },
+    "ingredientName2" : {
+        "isHealthy": boolean,
+        "reason": String
+    }
+  }
+}

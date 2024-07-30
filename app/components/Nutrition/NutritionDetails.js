@@ -1,17 +1,16 @@
 import NutritionRow from "./NutritionRow";
-import IngredientRow from "@/app/components/IngredientRow";
-import DailyCalorie from "@/app/components/Nutrition/DailyCalorie"
+import IngredientRow from "@/app/components/Nutrition/IngredientRow";
+import DailyCalorie from "@/app/components/Nutrition/DailyCalorie";
 import { Alert } from "@mui/material";
-import {useMemo, useState} from "react";
+import { useMemo, useState } from "react";
+import Button from "@/app/components/Common/Button";
 
 export default function NutritionDetails({ data, allergens }) {
     const [dailyCalorieLimit, setDailyCalorieLimit] = useState(2000);
-    // Memoize the modified ingredients data to avoid recalculating on every render
-    const ingredientsWithAllergens = useMemo(() => {
+    const [ingredientsWithAllergens, setIngredientsWithAllergens] = useState(() => {
         if (!data || !data.Ingredients || !Array.isArray(allergens)) {
             return {};
         }
-
         return Object.entries(data.Ingredients).reduce((acc, [name, details]) => {
             const isAllergen = allergens.some(
                 allergen => typeof allergen === 'string' && name.toLowerCase().includes(allergen.toLowerCase())
@@ -19,7 +18,32 @@ export default function NutritionDetails({ data, allergens }) {
             acc[name] = { ...details, isAllergen };
             return acc;
         }, {});
-    }, [data, allergens]);
+    });
+
+    const handleScanIngredients = async (image) => {
+        try {
+            const response = await fetch('/api/ingredients', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ image }),
+            });
+            const result = await response.json();
+            if (response.ok) {
+                setIngredientsWithAllergens(result.ingredients);
+            } else {
+                console.error(result.message);
+            }
+        } catch (error) {
+            console.error("Error scanning ingredients:", error);
+        }
+    };
+
+    const handleRescanIngredients = async () => {
+        const image = data.image; // Assuming the image is part of the data prop
+        handleScanIngredients(image);
+    };
 
     if (!data || !data.Nutrients || !data.Ingredients) {
         return <div>Loading...</div>;
@@ -32,14 +56,13 @@ export default function NutritionDetails({ data, allergens }) {
                 {/* Nutrition Facts Label */}
                 <div className="text-center">
                     <h2 className="font-bold text-4xl">Nutrition Facts</h2>
-                    <hr/>
+                    <hr />
                 </div>
                 <div className="text-xl">
                     {/* Servings Info */}
                     <p>{data.Nutrients["ServingsPerContainer"].value} Servings per container</p>
-                    <p className="font-bold">Serving
-                        Size: {data.Nutrients["ServingSize"].value} {data.Nutrients["ServingSize"].unit}</p>
-                    <hr className="h-3 bg-white"/>
+                    <p className="font-bold">Serving Size: {data.Nutrients["ServingSize"].value} {data.Nutrients["ServingSize"].unit}</p>
+                    <hr className="h-3 bg-white" />
                 </div>
                 <div>
                     {/* Calories Info */}
@@ -50,7 +73,7 @@ export default function NutritionDetails({ data, allergens }) {
                         </div>
                         <p className="font-bold">% Daily Value</p>
                     </div>
-                    <hr className="h-1 bg-white"/>
+                    <hr className="h-1 bg-white" />
                 </div>
                 {/* Nutrients */}
                 {/* Fat */}
@@ -95,32 +118,48 @@ export default function NutritionDetails({ data, allergens }) {
                 {/* Protein */}
                 <NutritionRow nutrient={data.Nutrients["Protein"]} nutrientName="Protein" isNameBold={true}
                               dailyCalorieLimit={dailyCalorieLimit}></NutritionRow>
-                <hr className="h-3 bg-white"/>
+                <hr className="h-3 bg-white" />
 
                 {/* Vitamins */}
                 <div>
-                    {Object.entries(data.Nutrients["Vitamins"]).map(([key, {value, unit}]) => (
+                    {Object.entries(data.Nutrients["Vitamins"]).map(([key, { value, unit }]) => (
                         <NutritionRow key={key} nutrient={data.Nutrients["Vitamins"][key]} nutrientName={key}
                                       dailyCalorieLimit={dailyCalorieLimit}></NutritionRow>
                     ))}
                 </div>
-                <hr className="h-1 bg-white"/>
-                <br/>
+                <hr className="h-1 bg-white" />
+                <br />
                 <DailyCalorie dailyCalorieLimit={dailyCalorieLimit}
                               setDailyCalorieLimit={setDailyCalorieLimit}></DailyCalorie>
             </div>
 
             {/* Ingredients */}
-            {/*TODO: Hide this section if no ingredients are detected/exist.
-                Also offer opportunity to scan ingredients separately if none are found during initial scan.
-            */}
-            <div className="py-10">
-                <h2 className="font-bold text-4xl text-center pb-3">Ingredients</h2>
-                <h3 className="font-bold text-md text-center pb-3">Click an ingredient for more info</h3>
-                {Object.entries(ingredientsWithAllergens).map(([name, { isHealthy, reason, isAllergen }]) => (
-                    <IngredientRow key={name} ingredient={name} isHealthy={isHealthy} reason={reason} isAllergen={isAllergen} />
-                ))}
-            </div>
+            {Object.keys(ingredientsWithAllergens).length > 0 ? (
+                <div className="py-10">
+                    <h2 className="font-bold text-4xl text-center pb-3">Ingredients</h2>
+                    <h3 className="font-bold text-md text-center pb-3">Click an ingredient for more info</h3>
+                    <Alert severity="warning">Ingredients may sometimes be hallucinated.</Alert>
+                    {Object.entries(ingredientsWithAllergens).map(([name, { isHealthy, reason, isAllergen }]) => (
+                        <IngredientRow key={name} ingredient={name} isHealthy={isHealthy} reason={reason}
+                                       isAllergen={isAllergen} />
+                    ))}
+                    <div className="py-10">
+                        <h2 className="font-bold text-xl text-center pb-3">Missing Ingredients?</h2>
+                        <h3 className="font-bold text-md text-center pb-3">Click below to rescan the ingredient section</h3>
+                        <div className="flex justify-center">
+                            <Button buttonText="Rescan Ingredients" onClick={handleRescanIngredients} />
+                        </div>
+                    </div>
+                </div>
+            ) : (
+                <div className="py-10">
+                    <h2 className="font-bold text-4xl text-center pb-3">No Ingredients Found</h2>
+                    <h3 className="font-bold text-md text-center pb-3">Would you like to scan ingredients separately?</h3>
+                    <div className="flex justify-center">
+                        <Button buttonText="Scan Ingredients" onClick={handleRescanIngredients} />
+                    </div>
+                </div>
+            )}
 
             <Alert severity="info">AI-generated information may be inaccurate; always verify with reliable sources.</Alert>
         </div>

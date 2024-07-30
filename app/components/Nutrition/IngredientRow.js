@@ -1,5 +1,5 @@
 import * as React from "react";
-import BasicModal from "@/app/components/Modal";
+import BasicModal from "@/app/components/Common/Modal";
 import { Tooltip } from "@mui/material";
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
