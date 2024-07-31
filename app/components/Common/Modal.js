@@ -26,12 +26,12 @@ export default function BasicModal({ title, body, open, onClose }) {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <Typography id="modal-modal-title" variant="h6" component="h2" style={{ textAlign: 'center' }}>
+                    <Typography id="modal-modal-title" variant="h6" component="h2" style={{textAlign: 'center'}}>
                         {title}
                     </Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                    <div id="modal-modal-description" style={{marginTop: '1rem'}}>
                         {body}
-                    </Typography>
+                    </div>
                     <Button
                         variant="contained"
                         color="primary"
@@ -39,7 +39,7 @@ export default function BasicModal({ title, body, open, onClose }) {
                             e.stopPropagation();
                             onClose();
                         }}
-                        sx={{ mt: 2 }}
+                        sx={{mt: 2}}
                     >
                         Close
                     </Button>

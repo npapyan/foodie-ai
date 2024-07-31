@@ -1,8 +1,7 @@
 import React from 'react';
 import NutritionRow from './NutritionRow';
 
-const NutrientList = ({ data, dailyCalorieLimit }) => {
-
+export default function NutrientList({ data, dailyCalorieLimit }) {
     // Utility function to render nutrients recursively with padding
     const renderNutrients = (name, nutrient, paddingLevel = 0, isBold = true) => {
         // If the nutrient has value and unit, render it first
@@ -78,5 +77,3 @@ const NutrientList = ({ data, dailyCalorieLimit }) => {
         </div>
     );
 };
-
-export default NutrientList;

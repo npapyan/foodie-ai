@@ -4,6 +4,7 @@ import Camera from "@/app/components/Camera/Camera";
 import Title from "@/app/components/Common/Title";
 import AllergenSelector from "@/app/components/Nutrition/AllergenSelector";
 import NutritionDetails from "@/app/components/Nutrition/NutritionDetails";
+import ProductNameInput from "@/app/components/Nutrition/ProductName";
 
 export default function Home() {
     const [allergens, setAllergens] = useState([
@@ -11,6 +12,7 @@ export default function Home() {
         { name: 'Almonds', checked: false },
     ]);
     const [nutritionData, setNutritionData] = useState(null);
+    const [productCounter, setProductCounter] = useState(0);
 
     const checkedAllergenNames = allergens
         .filter(allergen => allergen.checked)
@@ -18,6 +20,7 @@ export default function Home() {
 
     const handleNutritionData = (data) => {
         setNutritionData(data);
+        setProductCounter(productCounter+1);
     };
 
     const handleIngredientsData = (data) => {
@@ -38,6 +41,7 @@ export default function Home() {
             <Camera apiPath="/api/nutrition" onData={handleNutritionData} onClick={onScanClick}  scanText="Scan Nutrition Facts"/>
             {nutritionData && (
                 <div>
+                    <ProductNameInput productCounter={productCounter}></ProductNameInput>
                     <NutritionDetails data={nutritionData} allergens={checkedAllergenNames}/>
                     <div>
                         <h2 className="font-bold text-xl text-center pb-3">Missing/Incorrect Ingredients?</h2>
