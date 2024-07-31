@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from 'react';
 import Button from "@/app/components/Common/Button";
 import { CircularProgress } from "@mui/material";
 
-export default function Camera({ apiPath, onData, scanText }) {
+export default function Camera({ apiPath, onData, onClick, scanText }) {
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
     const [isCameraOn, setIsCameraOn] = useState(false);
@@ -25,6 +25,11 @@ export default function Camera({ apiPath, onData, scanText }) {
             console.error("getUserMedia not supported");
         }
     };
+
+    const onScanClick = () => {
+        setIsCameraOn(true);
+        onClick();
+    }
 
     const stopCamera = () => {
         if (videoRef.current && videoRef.current.srcObject) {
@@ -109,7 +114,7 @@ export default function Camera({ apiPath, onData, scanText }) {
                                         </div>
                                     </div>
                                 ) : (
-                                    <Button buttonText={scanText} onClick={() => setIsCameraOn(true)} />
+                                    <Button buttonText={scanText} onClick={onScanClick} />
                                 )}
                             </div>
                         )}

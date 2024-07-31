@@ -37,7 +37,7 @@ const NutrientList = ({ data, dailyCalorieLimit }) => {
         };
 
         return (
-            <div>
+            <div key={name}>
                 {renderMainNutrient()}
                 {renderSubcategories()}
             </div>

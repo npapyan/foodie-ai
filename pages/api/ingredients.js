@@ -26,13 +26,11 @@ export default async function handler(req, res) {
 
             const result = await model.generateContent([promptConfiguration, ...imageParts]);
             const response = await result.response;
-            const text = await response.json();
 
-            // Assuming the response contains a field 'ingredients' with the list
-            const ingredients = text.ingredients;
-            console.log(ingredients);
+            const text = response.text();
+            console.log(text);
 
-            res.status(200).json({ ingredients });
+            res.status(200).json({ result: response });
         } catch (error) {
             console.error("Error processing request:", error);
             res.status(500).json({ message: "Error processing your request" });

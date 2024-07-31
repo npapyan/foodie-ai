@@ -11,34 +11,42 @@ export default function Home() {
         { name: 'Almonds', checked: false },
     ]);
     const [nutritionData, setNutritionData] = useState(null);
-    const [ingredientsData, setIngredientsData] = useState(null);
 
     const checkedAllergenNames = allergens
         .filter(allergen => allergen.checked)
         .map(allergen => allergen.name);
 
     const handleNutritionData = (data) => {
-        console.log(data);
         setNutritionData(data);
     };
 
     const handleIngredientsData = (data) => {
-        setIngredientsData(data);
+        setNutritionData(prevState => ({
+            ...prevState,
+            Ingredients: data.Ingredients,
+        }));
     };
+
+    const onScanClick = () => {
+        setNutritionData(null);
+    }
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen">
-            <Title />
-            <AllergenSelector allergens={allergens} setAllergens={setAllergens} />
-            <Camera apiPath="/api/nutrition" onData={handleNutritionData} scanText="Scan Nutrition Facts" />
+            <Title/>
+            <AllergenSelector allergens={allergens} setAllergens={setAllergens}/>
+            <Camera apiPath="/api/nutrition" onData={handleNutritionData} onClick={onScanClick}  scanText="Scan Nutrition Facts"/>
             {nutritionData && (
-                <NutritionDetails data={nutritionData} allergens={checkedAllergenNames} />
-            )}
-            {ingredientsData && !nutritionData && (
-                <Camera apiPath="/api/ingredients" onData={handleIngredientsData} scanText="Scan Ingredients" />
-            )}
-            {ingredientsData && (
-                <NutritionDetails data={ingredientsData} allergens={checkedAllergenNames} />
+                <div>
+                    <NutritionDetails data={nutritionData} allergens={checkedAllergenNames}/>
+                    <div>
+                        <h2 className="font-bold text-xl text-center pb-3">Missing/Incorrect Ingredients?</h2>
+                        <h3 className="font-bold text-md text-center pb-3">Click below to rescan the ingredient section</h3>
+                        <div className="flex justify-center">
+                            <Camera apiPath="/api/ingredients" onData={handleIngredientsData} scanText="Scan Ingredients"/>
+                        </div>
+                    </div>
+                </div>
             )}
         </div>
     );
