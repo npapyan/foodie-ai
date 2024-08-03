@@ -28,7 +28,9 @@ export default function Camera({ apiPath, onData, onClick, scanText }) {
 
     const onScanClick = () => {
         setIsCameraOn(true);
-        onClick();
+        if (typeof onClick === 'function') {
+            onClick();
+        }
     }
 
     const stopCamera = () => {

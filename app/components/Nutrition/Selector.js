@@ -32,6 +32,16 @@ const textFieldStyle = {
     },
 };
 
+const buttonStyle = {
+    color: '#ffffff',
+    borderColor: '#ffffff',
+    margin: '0.5rem 0',
+    textAlign: 'left',
+    padding: '0.75rem 1rem',
+    justifyContent: 'flex-start',
+    textTransform: 'none'  // Prevent text from being transformed to uppercase
+};
+
 function Selector({ allergens, setAllergens, history, setHistory, onHistoryItemClick }) {
     const [open, setOpen] = useState(false);
     const [historyOpen, setHistoryOpen] = useState(false);
@@ -174,8 +184,15 @@ function Selector({ allergens, setAllergens, history, setHistory, onHistoryItemC
                     </Typography>
                     <List>
                         {history.map((item, index) => (
-                            <ListItem key={index} button onClick={() => onHistoryItemClick(item)}>
-                                <Typography variant="body1">{item.name}</Typography>
+                            <ListItem key={index} disablePadding>
+                                <Button
+                                    fullWidth
+                                    variant="outlined"
+                                    onClick={() => onHistoryItemClick(item)}
+                                    style={buttonStyle}
+                                >
+                                    {item.name}
+                                </Button>
                             </ListItem>
                         ))}
                     </List>
