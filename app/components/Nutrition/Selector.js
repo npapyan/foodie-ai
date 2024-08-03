@@ -1,9 +1,12 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { Modal, Box, Typography, Checkbox, FormControlLabel, TextField,
-    Button, List, ListItem, IconButton, Tooltip, SpeedDial, SpeedDialIcon, SpeedDialAction } from '@mui/material';
+import {
+    Modal, Box, Typography, Checkbox, FormControlLabel, TextField,
+    Button, List, ListItem, IconButton, SpeedDial, SpeedDialIcon, SpeedDialAction
+} from '@mui/material';
 import HealthAndSafetyIcon from '@mui/icons-material/HealthAndSafety';
 import DeleteIcon from '@mui/icons-material/Delete';
+import HistoryIcon from '@mui/icons-material/History'; // Icon for history
 
 const style = {
     position: 'absolute',
@@ -29,19 +32,31 @@ const textFieldStyle = {
     },
 };
 
-function AllergenSelector({ allergens, setAllergens }) {
+function Selector({ allergens, setAllergens, history, setHistory, onHistoryItemClick }) {
     const [open, setOpen] = useState(false);
+    const [historyOpen, setHistoryOpen] = useState(false);
     const [newAllergen, setNewAllergen] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
     const [speedDialOpen, setSpeedDialOpen] = useState(false);
+    const [tempProductName, setTempProductName] = useState('');
+    const [showSaveIcon, setShowSaveIcon] = useState(false);
 
     const handleOpen = () => {
         setOpen(true);
         setErrorMessage('');
         setSuccessMessage('');
     };
+
     const handleClose = () => setOpen(false);
+
+    const handleHistoryOpen = () => setHistoryOpen(true);
+    const handleHistoryClose = () => setHistoryOpen(false);
+
+    const handleClearHistory = () => {
+        setHistory([]); // Clear history
+        handleHistoryClose(); // Close the history modal
+    };
 
     const handleCheckboxChange = (index) => {
         const newAllergens = [...allergens];
@@ -67,6 +82,19 @@ function AllergenSelector({ allergens, setAllergens }) {
         setAllergens(newAllergens);
     };
 
+    const handleProductNameChange = (e) => {
+        setTempProductName(e.target.value);
+        setShowSaveIcon(true); // Show save icon if there are changes
+    };
+
+    const handleSaveProductName = () => {
+        // Update the history with the new product name
+        if (tempProductName) {
+            setHistory(prevHistory => [...prevHistory, { name: tempProductName }]);
+            setShowSaveIcon(false); // Hide save icon after saving
+        }
+    };
+
     return (
         <div>
             <SpeedDial
@@ -80,11 +108,20 @@ function AllergenSelector({ allergens, setAllergens }) {
             >
                 <SpeedDialAction
                     icon={<HealthAndSafetyIcon />}
-                    tooltipTitle="Add allergens"
+                    tooltipTitle="Allergens"
+                    placement="left"
                     tooltipOpen
                     onClick={handleOpen}
                 />
+                <SpeedDialAction
+                    icon={<HistoryIcon />}
+                    tooltipTitle="History"
+                    placement="left"
+                    tooltipOpen
+                    onClick={handleHistoryOpen}
+                />
             </SpeedDial>
+
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -119,13 +156,35 @@ function AllergenSelector({ allergens, setAllergens }) {
                         margin="normal"
                         sx={textFieldStyle}
                     />
-                    <Button variant="contained" onClick={handleAddAllergen} fullWidth style={{ marginTop: '1rem' }}>Add Allergen</Button>
+                    <Button variant="outlined" onClick={handleAddAllergen} fullWidth style={{ marginTop: '1rem' }}>Add Allergen</Button>
                     {errorMessage && <Typography color="error" variant="body2" style={{ marginTop: '1rem' }}>{errorMessage}</Typography>}
                     {successMessage && <Typography color="success" variant="body2" style={{ marginTop: '1rem' }}>{successMessage}</Typography>}
+                </Box>
+            </Modal>
+
+            <Modal
+                open={historyOpen}
+                onClose={handleHistoryClose}
+                aria-labelledby="history-modal-title"
+                aria-describedby="history-modal-description"
+            >
+                <Box sx={style}>
+                    <Typography id="history-modal-title" variant="h6" component="h2">
+                        Scanned Items History
+                    </Typography>
+                    <List>
+                        {history.map((item, index) => (
+                            <ListItem key={index} button onClick={() => onHistoryItemClick(item)}>
+                                <Typography variant="body1">{item.name}</Typography>
+                            </ListItem>
+                        ))}
+                    </List>
+                    <Button variant="outlined" onClick={handleClearHistory} fullWidth style={{ marginTop: '1rem' }}>Clear History</Button>
+                    <Button variant="outlined" onClick={handleHistoryClose} fullWidth style={{ marginTop: '1rem' }}>Close</Button>
                 </Box>
             </Modal>
         </div>
     );
 }
 
-export default AllergenSelector;
+export default Selector;

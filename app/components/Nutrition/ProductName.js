@@ -7,8 +7,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import InputAdornment from '@mui/material/InputAdornment';
 import DarkTheme from "@/app/components/Theme/DarkTheme";
 
-export default function ProductNameInput({productCounter}) {
-    const [productName, setProductName] = useState(`Product Name ${productCounter}`);
+export default function ProductNameInput({productCounter, productName, setProductName}) {
 
     useEffect(() => {
         productCounter++;
