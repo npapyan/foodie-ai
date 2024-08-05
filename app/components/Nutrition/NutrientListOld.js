@@ -1,5 +1,5 @@
 import React from 'react';
-import NutritionRow from './NutritionRow';
+import NutritionRow from './Row/NutritionRow';
 
 const NutrientList = ({ data, dailyCalorieLimit }) => {
     return (

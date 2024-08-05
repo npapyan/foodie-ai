@@ -1,5 +1,5 @@
 import React from 'react';
-import NutritionRow from './NutritionRow';
+import NutritionRow from './Row/NutritionRow';
 
 export default function NutrientList({ data, dailyCalorieLimit }) {
     // Utility function to render nutrients recursively with padding

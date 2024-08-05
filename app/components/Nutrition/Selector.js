@@ -142,6 +142,9 @@ function Selector({ allergens, setAllergens, history, setHistory, onHistoryItemC
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                         Select Allergens
                     </Typography>
+                    <Typography id="modal-modal-body" >
+                        Note: Ingredients that match checked allergens will be highlighted red.
+                    </Typography>
                     <List>
                         {allergens.map((allergen, index) => (
                             <ListItem key={index} secondaryAction={
