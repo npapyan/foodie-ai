@@ -3,6 +3,7 @@ Parse the list of ingredients by comma and exclude descriptor values such as "co
 Replace 'vitamin1' and 'ingredient2' with actual name of vitamin/ingredient.
 If no ingredients are in the photo, DO NOT MAKE UP INGREDIENTS.
 Return NULL if no nutrition facts are detected in the image.
+For each ingredient, provide a detailed analysis, including its health impact, nutritional value, and any potential benefits or drawbacks. For the overall analysis, consider the balance of nutrients, presence of healthy vs. unhealthy ingredients, and how they contribute to the overall dietary needs.
 JSON Schema:
 {
   "Nutrients": {

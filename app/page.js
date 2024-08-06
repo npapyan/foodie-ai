@@ -95,6 +95,18 @@ export default function Home() {
             <Camera apiPath="/api/nutrition" onData={handleNutritionData} onClick={onScanClick} scanText="Scan Nutrition Facts" />
             {nutritionData && nutritionData.Nutrients && (
                 <div>
+                    <div id="overallHealthyAnalysis" className="flex flex-col items-center justify-center mb-4 p-5">
+                        <Alert variant="outlined" severity={nutritionData?.overallAnalysis?.isHealthy ? 'success' : 'error'} className="mb-4">
+                            <div className={`${nutritionData?.overallAnalysis?.isHealthy ? 'text-green-600' : 'text-red-600'}`}>
+                                <h1 className="text-3xl font-bold">
+                                    {nutritionData?.overallAnalysis?.isHealthy ? "Overall Healthy" : "Overall Unhealthy"}
+                                </h1>
+                                <p>
+                                    {nutritionData?.overallAnalysis?.reason}
+                                </p>
+                            </div>
+                        </Alert>
+                    </div>
                     <div className="flex items-center">
                         <ProductNameInput
                             productCounter={productCounter}
@@ -103,7 +115,7 @@ export default function Home() {
                         />
                         {showSaveIcon && (
                             <IconButton onClick={handleSaveProductName} color="primary">
-                                <SaveIcon />
+                                <SaveIcon/>
                             </IconButton>
                         )}
                     </div>
@@ -112,7 +124,8 @@ export default function Home() {
                         <h2 className="font-bold text-xl text-center pb-3">Missing/Incorrect Ingredients?</h2>
                         <h3 className="font-bold text-md text-center pb-3">Click below to rescan the ingredient section</h3>
                         <div className="flex justify-center">
-                            <Camera apiPath="/api/ingredients" onData={handleIngredientsData} scanText="Scan Ingredients" />
+                            <Camera apiPath="/api/ingredients" onData={handleIngredientsData}
+                                    scanText="Scan Ingredients"/>
                         </div>
                     </div>
                 </div>
