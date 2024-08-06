@@ -7,6 +7,7 @@ import NutritionDetails from "@/app/components/Nutrition/NutritionDetails";
 import ProductNameInput from "@/app/components/Nutrition/ProductName";
 import SaveIcon from '@mui/icons-material/Save';
 import IconButton from '@mui/material/IconButton';
+import Alert from '@mui/material/Alert';
 
 export default function Home() {
     const [allergens, setAllergens] = useState([
@@ -18,9 +19,14 @@ export default function Home() {
     const [productName, setProductName] = useState(`Product Name ${productCounter}`);
     const [tempProductName, setTempProductName] = useState(productName);
     const [history, setHistory] = useState([]);
+    const [showAlert, setShowAlert] = useState(false);
 
     // Handle history update only when a new scan is done
     const handleNutritionData = (data) => {
+        if (!data.Nutrients) {
+            setShowAlert(true);
+            setTimeout(() => setShowAlert(false), 6000);
+        }
         setNutritionData(data);
         setProductCounter(prevCounter => {
             const newCounter = prevCounter + 1;
@@ -73,6 +79,11 @@ export default function Home() {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen">
+            {showAlert && (
+                <Alert variant="filled" severity="error" className="mb-4">
+                    An error occurred while scanning. Please try again.
+                </Alert>
+            )}
             <Title />
             <Selector
                 allergens={allergens}
@@ -82,7 +93,7 @@ export default function Home() {
                 onHistoryItemClick={handleHistoryItemClick}
             />
             <Camera apiPath="/api/nutrition" onData={handleNutritionData} onClick={onScanClick} scanText="Scan Nutrition Facts" />
-            {nutritionData && (
+            {nutritionData && nutritionData.Nutrients && (
                 <div>
                     <div className="flex items-center">
                         <ProductNameInput

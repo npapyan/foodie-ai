@@ -64,9 +64,8 @@ export default function NutritionRow({ nutrient, nutrientName, isNameItalic, isN
         defaultCalorieLimit
     );
 
-    // TODO: Calculate nutrient warnings based on daily value thresholds (tooHigh, tooLow).
     const nutrientInfo = nutrientDailyValues[nutrientNameLookup];
-    const highDailyValueExclusions = ["Protein"];
+    const highDailyValueExclusions = ["Protein", "Calcium"];
     const lowDailyValueExclusions = ["Added Sugars", "Sodium", "Cholesterol", "Total Fat", "Saturated Fat"];
     const isDailyValueTooHigh = percentage !== null && percentage > 20 && !highDailyValueExclusions.includes(nutrientName);
     const isDailyValueTooLow = percentage !== null && percentage < 5 && !lowDailyValueExclusions.includes(nutrientName);
