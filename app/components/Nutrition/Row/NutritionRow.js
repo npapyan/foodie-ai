@@ -23,17 +23,21 @@ const convertUnits = (value, fromUnit, toUnit) => {
 // Calculate the percentage of daily intake for a given nutrient
 const calculateDailyIntake = (nutrient, amount, unit, dailyCalorieLimit, defaultCalorieLimit) => {
     const dailyValue = nutrientDailyValues[nutrient];
-    if (!dailyValue) {
+    if (!dailyValue || dailyValue.value === null || dailyValue.value === undefined) {
         return null;
     }
 
     const amountInMg = convertUnits(amount, unit, 'mg');
     const dailyValueInMg = convertUnits(dailyValue.value, dailyValue.unit, 'mg');
 
+    if (dailyValueInMg === 0) {
+        return null;
+    }
+
     const percentage = (amountInMg / dailyValueInMg) * 100;
     const adjustedPercentage = (percentage * defaultCalorieLimit) / dailyCalorieLimit;
 
-    return adjustedPercentage.toFixed(2); // return adjusted percentage with 2 decimal points
+    return adjustedPercentage.toFixed(2);
 };
 
 function lowercaseFirstLetter(str) {
