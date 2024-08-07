@@ -71,7 +71,7 @@ export default function NutrientList({ data, dailyCalorieLimit }) {
             <div>
                 {Object.entries(data.Nutrients["Vitamins"]).map(([key, {value, unit}]) => (
                     <NutritionRow key={key} nutrient={data.Nutrients["Vitamins"][key]} nutrientName={key}
-                                  dailyCalorieLimit={dailyCalorieLimit}></NutritionRow>
+                                  dailyCalorieLimit={dailyCalorieLimit} isVitamin={true}></NutritionRow>
                 ))}
             </div>
         </div>

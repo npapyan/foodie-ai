@@ -265,7 +265,7 @@ const nutrientDailyValues = {
         name: "Zinc",
         value: 11,
         unit: "mg",
-        tooLow: 8, // Different for women
+        tooLow: 8,
         tooHigh: 40,
         notes: "Important for immune function and wound healing."
     }

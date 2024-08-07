@@ -1,11 +1,10 @@
 import BasicModal from "@/app/components/Common/Modal";
 import * as React from "react";
 import nutrientDailyValues from '../../../constants/nutrientDailyValues';
-import KeyboardDoubleArrowDownRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowDownRounded';
-import KeyboardDoubleArrowUpRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowDownRounded';
+import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDownRounded';
+import KeyboardDoubleArrowUpRounded from '@mui/icons-material/KeyboardDoubleArrowUpRounded';
 import { Tooltip, Alert } from '@mui/material';
 
-// Utility function to convert units if necessary
 const convertUnits = (value, fromUnit, toUnit) => {
     const conversions = {
         mcg: 0.001, // 1 mcg = 0.001 mg
@@ -45,7 +44,7 @@ function lowercaseFirstLetter(str) {
     return str.charAt(0).toLowerCase() + str.slice(1);
 }
 
-export default function NutritionRow({ nutrient, nutrientName, isNameItalic, isNameBold, dailyCalorieLimit }) {
+export default function NutritionRow({ nutrient, nutrientName, isNameItalic, isNameBold, dailyCalorieLimit, isVitamin }) {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -69,10 +68,10 @@ export default function NutritionRow({ nutrient, nutrientName, isNameItalic, isN
     );
 
     const nutrientInfo = nutrientDailyValues[nutrientNameLookup];
-    const highDailyValueExclusions = ["Protein", "Calcium"];
-    const lowDailyValueExclusions = ["Added Sugars", "Sodium", "Cholesterol", "Total Fat", "Saturated Fat"];
-    const isDailyValueTooHigh = percentage !== null && percentage > 20 && !highDailyValueExclusions.includes(nutrientName);
-    const isDailyValueTooLow = percentage !== null && percentage < 5 && !lowDailyValueExclusions.includes(nutrientName);
+    const highDailyValueExclusions = ["Protein", "Calcium", "Dietary Fiber"];
+    const lowDailyValueExclusions = ["Added Sugars", "Sodium", "Cholesterol", "Total Fat", "Saturated Fat", "Total Carbohydrate"];
+    const isDailyValueTooHigh = !isVitamin && percentage !== null && percentage > 20 && !highDailyValueExclusions.includes(nutrientName);
+    const isDailyValueTooLow = !isVitamin && percentage !== null && percentage < 5 && !lowDailyValueExclusions.includes(nutrientName);
 
     return (
         <div onClick={openModal} className="flex justify-between items-center">
@@ -85,12 +84,12 @@ export default function NutritionRow({ nutrient, nutrientName, isNameItalic, isN
                 <div className="flex items-center ml-auto">
                     {isDailyValueTooHigh && (
                         <Tooltip title="High percentage of daily value" arrow>
-                            <KeyboardDoubleArrowUpRoundedIcon style={{ color: 'red' }} />
+                            <KeyboardDoubleArrowUpRounded style={{ color: 'red' }} />
                         </Tooltip>
                     )}
                     {isDailyValueTooLow && (
                         <Tooltip title="Low percentage of daily value" arrow>
-                            <KeyboardDoubleArrowDownRoundedIcon style={{ color: 'red' }} />
+                            <KeyboardDoubleArrowDownIcon style={{ color: 'red' }} />
                         </Tooltip>
                     )}
                     {percentage}%
