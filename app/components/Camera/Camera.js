@@ -75,8 +75,7 @@ export default function Camera({ apiPath, onData, onClick, scanText }) {
             });
             const data = await response.json();
             if (!response.ok) throw new Error(data.message || 'Network response was not ok.');
-            const parsedData = JSON.parse(data.result.candidates[0].content.parts[0].text)
-            onData(parsedData);
+            onData(data);
         } catch (error) {
             console.error("Error sending image:", error);
         } finally {

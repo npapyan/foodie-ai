@@ -5,14 +5,12 @@ import path from 'path';
 import sharp from 'sharp';
 const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
 
-// Access your API key as an environment variable (see "Set up your API key" above)
 const genAI = new GoogleGenerativeAI(API_KEY);
 const model = genAI.getGenerativeModel({
     model: "gemini-1.5-flash",
     // Set the `responseMimeType` to output JSON
     generationConfig: { responseMimeType: "application/json" }
 });
-
 
 async function getFileContent(filePath) {
     return await fs.readFile(filePath, 'utf8');
@@ -46,18 +44,22 @@ export default async function handler(req, res) {
                 .jpeg()
                 .toBuffer();
 
-
             const imageParts = [
                 fileToGenerativePart(data, "image/png"),
             ];
 
             const result = await model.generateContent([promptConfiguration, ...imageParts]);
+            const text = result.response.text();
+            console.log("Generated Response Text:", text);
+            let parsedJson;
+            try {
+                parsedJson = JSON.parse(text);
+            } catch (parseError) {
+                console.error("Error parsing JSON:", parseError);
+                return res.status(500).json({ message: "Invalid JSON format received from Generative AI." });
+            }
 
-            const response = await result.response;
-            const text = response.text();
-            console.log(text);
-
-            res.status(200).json({ result: response });
+            res.status(200).json(parsedJson);
         } catch (error) {
             console.error("Error processing request:", error);
             res.status(500).json({ message: "Error processing your request" });
@@ -67,3 +69,11 @@ export default async function handler(req, res) {
         res.status(405).end(`Method ${req.method} Not Allowed`);
     }
 }
+
+export const config = {
+    api: {
+        bodyParser: {
+            sizeLimit: '8mb', // Default body sizeLimit for nextJS is 1mb. Increasing for use in iOS App.
+        },
+    },
+};
