@@ -45,7 +45,7 @@ export default async function handler(req, res) {
                 .toBuffer();
 
             const imageParts = [
-                fileToGenerativePart(data, "image/png"),
+                fileToGenerativePart(data, "image/jpeg"),
             ];
 
             const result = await model.generateContent([promptConfiguration, ...imageParts]);
@@ -73,7 +73,7 @@ export default async function handler(req, res) {
 export const config = {
     api: {
         bodyParser: {
-            sizeLimit: '8mb', // Default body sizeLimit for nextJS is 1mb. Increasing for use in iOS App.
+            sizeLimit: '3mb', // Default body sizeLimit for Next.js is 1mb. Increasing for use in iOS App.
         },
     },
 };
