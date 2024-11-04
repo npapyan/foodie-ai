@@ -3,6 +3,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { promises as fs } from 'fs';
 import path from 'path';
 import sharp from 'sharp';
+import { v4 as uuidv4 } from 'uuid';
 const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
 
 const genAI = new GoogleGenerativeAI(API_KEY);
@@ -26,6 +27,16 @@ function fileToGenerativePart(buffer, mimeType) {
 }
 
 export default async function handler(req, res) {
+    const requestId = uuidv4();
+    const requestStartTime = new Date().toISOString();
+    console.log(`[${requestId}] [${requestStartTime}] Incoming request: ${req.method} ${req.url}`);
+
+    // Log request headers for session tracking
+    const sourceIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    const userAgent = req.headers['user-agent'];
+    console.log(`[${requestId}] Source IP: ${sourceIP}`);
+    console.log(`[${requestId}] User-Agent: ${userAgent}`);
+
     if (req.method === 'POST') {
         try {
             let { image } = req.body;
